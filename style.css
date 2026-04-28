@@ -80,9 +80,14 @@ button {
 button:hover { background: var(--primary-dark); }
 
 footer {
+  position: fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background-color:#194c98;
   text-align: center;
   padding: 2rem 1rem;
-  color: #666;
+  color: #fff;
 }
 
 @media (max-width: 600px) {
