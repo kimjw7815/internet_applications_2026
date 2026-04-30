@@ -1,44 +1,41 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>인터넷활용 실습 템플릿</title>
+  <title>Kim JiWoo | Portfolio</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>Kim JiWoo</h1>
-  <p class="subtitle">광운대학교 26학번 재학중인 대학생입니다.</p>
-</header>
-<nav>
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="portfolio.html">Portfolio</a>
-  <a href="contact.html">Contact</a>
-</nav>
-<main class="container">
-<section>
-  <h2>Portfolio</h2>
-  <ol>
-    <li>
-      <strong>인터넷 활용 프로젝트</strong><br>
-      html5, CSS, JS를 활용한 웹사이트 개발 - <a href="https://github.com/kimjw7815/internet_applications_2026">깃허브 페이지</a>
-    </li>
-    <li>
-      <strong>남목고 커뮤니티</strong><br>
-      남목고등학교 커뮤니티 개발 — <a href="https://github.com/kimjw7815/NHS">깃허브 페이지</a>, <a href="https://rlex0815.pythonanywhere.com/NHSApp/">pythonanywhere 호스팅 페이지</a>
-    </li>
-    <li>
-      <strong>타로 AI</strong><br>
-      유니스트 STEM 캠프 협업, LLM 기반 타로 사주 프로그램 — <a href="https://github.com/kimjw7815/STEM_TarotAI">깃허브 페이지</a>
-    </li>
-  </ol>
-</section>
-</main>
-<footer>
-  <small>&copy; <span id="year"></span> Kim JiWoo</small>
-</footer>
-<script src="script.js"></script>
+  <header id="header-root"></header>
+
+  <main class="container">
+    <section>
+      <h2>Portfolio</h2>
+      <div class="portfolio-grid">
+        <div class="project-item">
+          <h3>인터넷 활용 프로젝트</h3>
+          <p>HTML5, CSS, JS를 활용한 웹사이트 개발</p>
+          <a href="https://github.com/kimjw7815/internet_applications_2026" target="_blank" class="link-btn">GitHub</a>
+        </div>
+        <div class="project-item">
+          <h3>남목고 커뮤니티</h3>
+          <p>남목고등학교 커뮤니티 개발</p>
+          <div class="btn-group">
+            <a href="https://github.com/kimjw7815/NHS" target="_blank" class="link-btn">GitHub</a>
+            <a href="https://rlex0815.pythonanywhere.com/NHSApp/" target="_blank" class="link-btn secondary">Hosting</a>
+          </div>
+        </div>
+        <div class="project-item">
+          <h3>타로 AI</h3>
+          <p>유니스트 STEM 캠프 협업, LLM 기반 타로 사주 프로그램</p>
+          <a href="https://github.com/kimjw7815/STEM_TarotAI" target="_blank" class="link-btn">GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer-root"></footer>
+  <script src="script.js"></script>
 </body>
 </html>
