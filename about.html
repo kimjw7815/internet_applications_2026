@@ -1,41 +1,39 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>인터넷활용 실습 템플릿</title>
+  <title>Kim JiWoo | About</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>Kim JiWoo</h1>
-  <p class="subtitle">광운대학교 26학번 재학중인 대학생입니다.</p>
-</header>
-<nav>
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="portfolio.html">Portfolio</a>
-  <a href="contact.html">Contact</a>
-</nav>
-<main class="container">
-<section>
-  <h2>About Me</h2>
-  <p>소프트웨어학부 26학번</p>
-  <h3>학력</h3>
-  <ul>
-    <li>남목고등학교 졸업</li>
-    <li>광운대학교 재학</li>
-  </ul>
-  <h3>관심 분야</h3>
-  <ul>
-    <li>인공지능</li>
-    <li>게임 개발</li>
-  </ul>
-</section>
-</main>
-<footer>
-  <small>&copy; <span id="year"></span> Kim JiWoo</small>
-</footer>
-<script src="script.js"></script>
+  <header id="header-root"></header>
+
+  <main class="container">
+    <section>
+      <h2>About Me</h2>
+      <p class="description">소프트웨어학부 26학번</p>
+      
+      <div class="grid-container">
+        <div class="card">
+          <h3>학력</h3>
+          <ul>
+            <li>남목고등학교 졸업</li>
+            <li>광운대학교 재학</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>관심 분야</h3>
+          <ul>
+            <li>인공지능</li>
+            <li>게임개발</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer-root"></footer>
+  <script src="script.js"></script>
 </body>
 </html>
