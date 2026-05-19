@@ -154,3 +154,80 @@ footer {
   .nav-container { flex-direction: column; gap: 1rem; }
   nav a { margin: 0 0.5rem; }
 }
+
+/* --- 드롭다운 내비게이션 전용 스타일 --- */
+nav {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-nav {
+  position: relative;
+  display: inline-block;
+  margin-left: 1.5rem;
+}
+
+/* 화살표(삼각형)와 텍스트 스타일 조정 */
+.dropdown-nav summary {
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  list-style: none; /* 기본 삼각형 숨기기 원할 경우 */
+}
+.dropdown-nav summary:hover {
+  color: var(--primary-color);
+}
+.dropdown-nav summary::-webkit-details-marker {
+  display: none; /* 사파리 브라우저 기본 삼각형 숨기기 */
+}
+
+/* 메뉴가 열렸을 때 아래로 띄울 박스 설정 */
+.dropdown-nav ul {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.5rem;
+  padding: 0.5rem 0;
+  list-style: none;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  min-width: 160px;
+  z-index: 1010;
+}
+
+/* 드롭다운 내부 링크 스타일 */
+.dropdown-nav ul li a {
+  display: block;
+  padding: 0.6rem 1rem;
+  margin: 0;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.dropdown-nav ul li a:hover {
+  background-color: rgba(187, 134, 252, 0.1); /* --primary-color 살짝 투명하게 배경으로 활용 */
+  color: var(--primary-color);
+}
+
+/* 모바일 화면대응 수정 (기존 @media 구문 보완) */
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .dropdown-nav {
+    margin-left: 0;
+  }
+  .dropdown-nav ul {
+    position: static;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+  }
+}

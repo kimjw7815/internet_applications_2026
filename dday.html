@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kim JiWoo | D-day 계산기</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header id="header-root"></header>
+
+  <main class="container">
+    <section>
+      <div class="grid-container">
+        <div class="card">
+          <h2>D-day 계산기</h2>
+          
+          <!-- CSS 폼 스타일 활용 -->
+          <div class="contact-form">
+            <div class="input-group">
+              <label for="target-date" style="color: var(--text-secondary); font-size: 0.9rem;">목표 날짜를 선택하세요</label>
+              <input type="date" id="target-date">
+            </div>
+            <button type="button" class="submit-btn" onclick="calculateDday()">계산하기</button>
+          </div>
+
+          <!-- 결과 출력 영역 -->
+          <div id="dday-result" style="margin-top: 1.5rem; text-align: center;"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer-root"></footer>
+  <script src="script.js"></script>
+
+  <script>
+    // 페이지 로드 시 오늘 날짜를 기본값으로 지정
+    document.getElementById('target-date').value = new Date().toISOString().substring(0, 10);
+
+    function calculateDday() {
+      const dateInput = document.getElementById('target-date').value;
+      const resultDiv = document.getElementById('dday-result');
+      
+      if (!dateInput) {
+        resultDiv.innerHTML = `<h3 style="color: var(--secondary-color);">날짜를 선택해주세요.</h3>`;
+        return;
+      }
+
+      const now = new Date();
+      // 날짜 비교를 위해 시, 분, 초를 0으로 맞춤
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      
+      const parts = dateInput.split('-');
+      const targetDate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+      const diffMs = targetDate.getTime() - today.getTime();
+      const diffDay = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+      let resultHTML = `<h4 style="color: var(--text-secondary);">목표 날짜: ${targetDate.toLocaleDateString()}</h4>`;
+
+      if (diffDay === 0) {
+        resultHTML += `<h2>오늘이 바로 D-day입니다! 🎉</h2>`;
+      } else if (diffDay > 0) {
+        resultHTML += `<h2 style="color: var(--primary-color);">D-${diffDay}</h2>`;
+      } else {
+        resultHTML += `<h2 style="color: var(--text-secondary);">D+${Math.abs(diffDay)}</h2>`;
+      }
+
+      resultDiv.innerHTML = resultHTML;
+    }
+  </script>
+</body>
+</html>

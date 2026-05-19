@@ -1,17 +1,33 @@
-<div class="nav-container">
-  <div class="logo">
-    <a href="index.html">Kim JiWoo</a>
+<header>
+  <!-- 상단 네비게이션 바 -->
+  <div class="nav-container">
+    <div class="logo">
+      <a href="index.html">Kim JiWoo</a>
+    </div>
+    
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+      
+      <!-- 드롭다운 메뉴 (css 연동을 위해 클래스 추가) -->
+      <details class="dropdown-nav">
+        <summary>그 외</summary>
+        <ul>
+          <li><a href="dday.html">D-day_Calculator</a></li>
+          <li><a href="randomselector.html">random_selector</a></li>
+        </ul>
+      </details>
+    </nav>
+    
+    <button id="theme-toggle" aria-label="테마 변경">
+      <span class="mode-icon"></span>
+    </button>
   </div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="portfolio.html">Portfolio</a>
-    <a href="contact.html">Contact</a>
-  </nav>
-  <button id="theme-toggle" aria-label="테마 변경">
-    <span class="mode-icon"></span>
-  </button>
+
+  <!-- 소개글은 네비게이션 바 밖으로 빼서 아래쪽에 배치해야 레이아웃이 안 깨집니다 -->
   <div class="header-content">
     <p class="subtitle">광운대학교 26학번 재학중인 소프트웨어학부 대학생입니다.</p>
   </div>
-</div>
+</header>
