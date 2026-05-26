@@ -28,6 +28,7 @@
 
   <script>
     // 마찬가지로 색 하드코딩 빼고 css 변수 추가해서 바꾸도록 해야함
+    // solved
     // 1. 부모 요소(ul) 찾기
     var parent = document.getElementById("commentList");
     // 2. 새로운 요소(li) 생성 및 내용 채우기
@@ -41,8 +42,6 @@
         var p = this.parentElement; // 부모(ul) 찾기
         p.removeChild(this); // 부모에서 나(this)를 삭제
       };
-      newLi.onmouseenter = function () {this.style.backgroundColor="#000000"}
-      newLi.onmouseleave = function () {this.style.backgroundColor="#1e1e1e"}
       newLi.className="card";
       // 4. 부모 요소에 갖다 붙이기
       parent.appendChild(newLi);
