@@ -98,6 +98,29 @@ h2 { font-size: 2rem; margin-bottom: 1.5rem; color: var(--primary-color); }
   margin-bottom: 1.5rem;
 }
 
+/* 실습 기능용 CSS 변수 */
+
+#example-card.active-color {
+  color: var(--primary-color);
+}
+
+#example-card.active-fontsize {
+  font-size: 64px;
+}
+
+#example-card.active-bg {
+  background-color: var(--secondary-color);
+}
+
+#commentList .card {
+  transition: background-color 0.2s ease;
+}
+
+#commentList .card:hover {
+  background-color: var(--bg-color);
+}
+/* 실습 기능용 CSS 스타일 끝*/
+
 /* 버튼 스타일 */
 #theme-toggle {
   background: none;
