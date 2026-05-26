@@ -16,6 +16,10 @@
       <div class="grid-container">
         <div class="card">
           <h2>Comment</h2>
+          <div class="input-group">
+            <input placeholder="이름을 입력하세요" id="nameTextarea"></input>
+            <textarea rows="4" placeholder="메시지를 입력하세요" id="commentTextarea"></textarea>
+          </div>
           <button class="submit-btn" onclick="addNewComment()">새로운 댓글 달기</button>
           <ul id="commentList" style="list-style: none;"></ul>
         </div>
@@ -33,17 +37,55 @@
     var parent = document.getElementById("commentList");
     // 2. 새로운 요소(li) 생성 및 내용 채우기
     function addNewComment() {
-      const inputStr=prompt();
+      var nameTextarea=document.getElementById("nameTextarea");
+      var nameStr=nameTextarea.value;
+      if (!nameStr) nameStr="익명";
+      
+      const now = new Date().toLocaleString();
+
+      var commentTextarea=document.getElementById("commentTextarea");
+      const commentStr=commentTextarea.value;
+      commentTextarea.value="";
+      if (!commentStr) return;
+
       var newLi = document.createElement("li");
-      const now=new Date();
-      newLi.innerHTML = now.toLocaleString()+"<br>"+ inputStr;
-      // 3. 클릭 시 삭제되는 이벤트 리스너 등록
+      newLi.className = "card";
       newLi.onclick = function () {
-        var p = this.parentElement; // 부모(ul) 찾기
-        p.removeChild(this); // 부모에서 나(this)를 삭제
+        var p = this.parentElement;
+        p.removeChild(this);
       };
-      newLi.className="card";
-      // 4. 부모 요소에 갖다 붙이기
+      
+      var nameDateDiv=document.createElement("div");
+      nameDateDiv.innerHTML=nameStr+" - "+now;
+      newLi.appendChild(nameDateDiv);
+      var contentDiv=document.createElement("div");
+      contentDiv.innerHTML=commentStr;
+      newLi.appendChild(contentDiv);
+
+      var likeButton = document.createElement("button");
+      likeButton.className = "submit-btn";
+      likeButton.style.margin="10px";
+      likeButton.innerHTML = "👍 0"
+      newLi.appendChild(likeButton);
+      let likeCount = 0;
+      likeButton.onclick = function (event) {
+        event.stopPropagation();
+        likeCount++;
+        this.innerHTML = "👍 " + likeCount;
+      };
+      
+      var dislikeButton = document.createElement("button");
+      dislikeButton.className = "submit-btn";
+      likeButton.style.margin="10px";
+      dislikeButton.innerHTML = "👎 0"
+      newLi.appendChild(dislikeButton);
+      let dislikeCount = 0;
+      dislikeButton.onclick = function (event) {
+        event.stopPropagation();
+        dislikeCount++;
+        this.innerHTML = "👎 " + dislikeCount;
+      };
+
       parent.appendChild(newLi);
     }
   </script>
