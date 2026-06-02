@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadComponent('footer-root', 'footer.html', updateYear);
 
   function loadComponent(id, file, callback) {
-    fetch(file)
+    fetch(`${file}?_=${Date.now()}`)
       .then(response => response.text())
       .then(data => {
         document.getElementById(id).innerHTML = data;
