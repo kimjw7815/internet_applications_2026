@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kim JiWoo | dom_list</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header id="header-root"></header>
+
+  <main class="container">
+    <section>
+      <div class="grid-container">
+        <div class="card">
+          <h2>댓글 추가/삭제 프로그램</h2>
+          <div class="input-group">
+            <input placeholder="이름을 입력하세요" id="nameTextarea"></input>
+            <textarea rows="4" placeholder="메시지를 입력하세요" id="commentTextarea"></textarea>
+          </div>
+          <button class="submit-btn" onclick="addNewComment()">새로운 댓글 달기</button>
+          <ul id="commentList" style="list-style: none;"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer-root"></footer>
+  <script src="script.js"></script>
+
+  <script>
+    // 마찬가지로 색 하드코딩 빼고 css 변수 추가해서 바꾸도록 해야함
+    // solved
+    // 1. 부모 요소(ul) 찾기
+    var parent = document.getElementById("commentList");
+    // 2. 새로운 요소(li) 생성 및 내용 채우기
+    function addNewComment() {
+      var nameTextarea=document.getElementById("nameTextarea");
+      var nameStr=nameTextarea.value;
+      if (!nameStr) nameStr="익명";
+      
+      const now = new Date().toLocaleString();
+
+      var commentTextarea=document.getElementById("commentTextarea");
+      const commentStr=commentTextarea.value;
+      commentTextarea.value="";
+      if (!commentStr) return;
+
+      var newLi = document.createElement("li");
+      newLi.className = "card";
+      newLi.onclick = function () {
+        var p = this.parentElement;
+        p.removeChild(this);
+      };
+      
+      var nameDateDiv=document.createElement("div");
+      nameDateDiv.innerHTML=nameStr+" - "+now;
+      newLi.appendChild(nameDateDiv);
+      var contentDiv=document.createElement("div");
+      contentDiv.innerHTML=commentStr;
+      newLi.appendChild(contentDiv);
+
+      var likeButton = document.createElement("button");
+      likeButton.className = "submit-btn";
+      likeButton.style.margin="10px";
+      likeButton.innerHTML = "👍 0"
+      newLi.appendChild(likeButton);
+      let likeCount = 0;
+      likeButton.onclick = function (event) {
+        event.stopPropagation();
+        likeCount++;
+        this.innerHTML = "👍 " + likeCount;
+      };
+      
+      var dislikeButton = document.createElement("button");
+      dislikeButton.className = "submit-btn";
+      likeButton.style.margin="10px";
+      dislikeButton.innerHTML = "👎 0"
+      newLi.appendChild(dislikeButton);
+      let dislikeCount = 0;
+      dislikeButton.onclick = function (event) {
+        event.stopPropagation();
+        dislikeCount++;
+        this.innerHTML = "👎 " + dislikeCount;
+      };
+
+      parent.appendChild(newLi);
+    }
+  </script>
+</body>
+
+</html>

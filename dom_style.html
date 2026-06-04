@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kim JiWoo | dom_style</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header id="header-root"></header>
+
+  <main class="container">
+    <section>
+      <div class="grid-container">
+        <div class="card">
+          <h2>DOM 스타일 변환 실험기</h2>
+          <button class="submit-btn" onclick="toggleColor()">색 바꾸기</button>
+          <button class="submit-btn" onclick="toggleFontSize()">크게 보기</button>
+          <button class="submit-btn" onclick="toggleBgColor()">배경 강조</button>
+          <button class="submit-btn" onclick="toggleVisibility()">숨기기/보이기</button>
+        </div>
+        <p class="card" id="example-card">
+          <strong>예시</strong>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer-root"></footer>
+  <script src="script.js"></script>
+
+  <script>
+    // 버튼 누른 후 테마모드 변환 시 카드에 적용되지 않는 버그 있음.
+    // defaultValue와 targetValue 모두 버튼을 누를 때, 함수가 호출될 때의 테마를 기반으로 선언되어야 함
+    // 혹은 css 클래스 스타일을 추가해 script에서는 css 클래스 변수의 참/거짓값만 toggle하게 해야 함.
+    // solved
+
+    var exampleCard = document.getElementById('example-card')
+
+    function toggleColor() {
+      exampleCard.classList.toggle('active-color');
+    }
+
+    function toggleFontSize() {
+      exampleCard.classList.toggle('active-fontsize');
+    }
+
+    function toggleBgColor() {
+      exampleCard.classList.toggle('active-bg');
+    }
+
+    function toggleVisibility() {
+      if (exampleCard.style.display == "none") exampleCard.style.display = "block";
+      else exampleCard.style.display = "none";
+    }
+  </script>
+</body>
+
+</html>

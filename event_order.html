@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kim JiWoo | event_order</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header id="header-root"></header>
+
+  <main class="container">
+    <section>
+      <div class="grid-container">
+        <div class="card">
+          <h2>스마트 피자 주문기</h2>
+          
+          <!-- CSS 폼 스타일 활용 -->
+          <div class="contact-form">
+            <div class="input-group">
+
+              <div id="menu-container"></div>
+              
+              <label style="color: var(--text-secondary); font-size: 0.9rem;">주소</label>
+              <input id="address-input" type="text" onchange="recalc()" onkeyup="recalc()">
+              <label style="color: var(--text-secondary); font-size: 0.9rem;">주문 합계</label>
+              <h3 id="total-price">0원</h3>
+              
+            </div>
+            <button type="button" class="submit-btn" onclick="pay()">결제하기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer-root"></footer>
+  <script src="script.js"></script>
+
+  <script>
+    const menuData = [
+      { type: 'divider', name: '피자' }, // 구분선 타이틀용
+      { type: 'pizza', name: '콤비네이션 피자', price: 12000 },
+      { type: 'pizza', name: '베이컨포테이토 피자', price: 12000 },
+      { type: 'pizza', name: '페퍼로니 피자', price: 12000 },
+      { type: 'pizza', name: '치즈 피자', price: 10000 },
+      { type: 'divider', name: '사이드' }, // 구분선 타이틀용
+      { type: 'side', name: '치즈볼 2개입', price: 5000 },
+      { type: 'side', name: '치즈스틱 2개입', price: 5000 },
+      { type: 'side', name: '콜라 500mL', price: 2000 },
+      { type: 'side', name: '콜라 1L', price: 3500 },
+      { type: 'side', name: '사이다 500mL', price: 2000 },
+      { type: 'side', name: '사이다 1L', price: 3500 }
+    ];
+
+    function renderMenu() {
+      const container = document.getElementById('menu-container');
+      let htmlString = '';
+
+      menuData.forEach(item => {
+        if (item.type === 'divider') {
+          // '사이드' 같은 구분 타이틀 생성
+          htmlString += `<div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: bold;">${item.name}</div>`;
+        } else {
+          // 일반 메뉴 아이템 생성
+          htmlString += `
+            <label style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; color: var(--text-main); cursor: pointer;">
+              <span style="font-weight: 500;">${item.name}</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="margin-right: 4px; color: var(--text-secondary); font-size: 0.95rem;">${item.price.toLocaleString()}원</span>
+                <button type="button" onclick="changeQty(this, 1)" style="width: 28px; height: 28px; cursor: pointer;">+</button>
+                <button type="button" onclick="changeQty(this, -1)" style="width: 28px; height: 28px; cursor: pointer;">-</button>
+                <input type="number" data-type="${item.type}" value="0" min="0" data-price="${item.price}" onchange="recalc()" onkeyup="recalc()">
+              </div>
+            </label>
+          `;
+        }
+      });
+
+      container.innerHTML = htmlString;
+    }
+
+    function changeQty(button, step) {
+      const controlDiv = button.parentElement;
+      const input = controlDiv.querySelector('input[type="number"]');
+      
+      if (input) {
+        let currentVal = parseInt(input.value) || 0;
+        let newVal = currentVal + step;
+        
+        if (newVal < 0) newVal = 0;
+        
+        input.value = newVal;
+        recalc();
+      }
+    }
+
+    function recalc() {
+      let totalPrice = 0;
+      const quantityInputs = document.querySelectorAll('input[type="number"]');
+      
+      quantityInputs.forEach(input => {
+        const count = parseInt(input.value) || 0;
+        const price = parseInt(input.getAttribute('data-price')) || 0;
+        totalPrice += count * price;
+      });
+      
+      const totalElem = document.getElementById('total-price');
+      if (totalElem) {
+        totalElem.innerText = totalPrice+" 원";
+      }
+    }
+    
+    function pay(e) {
+      const pizzaInputs = document.querySelectorAll('input[data-type="pizza"]');
+      let totalPizzaCount = 0;
+      pizzaInputs.forEach(input => {
+        totalPizzaCount += parseInt(input.value) || 0;
+      });
+      if (totalPizzaCount === 0) {
+        alert("피자 메뉴를 최소 1개 이상 선택하셔야 주문이 가능합니다!");
+        return false;
+      }
+
+      const addressInput = document.getElementById('address-input');
+      if (addressInput.value==="") {
+        alert("주소를 입력해주세요!");
+        return false;
+      }
+      
+      var total = parseInt(document.getElementById("total-price").innerText);
+      alert("주문 완료! 총액: " + total + "원");
+      e.preventDefault(); // 페이지 이동 막기 공통()
+      return false;
+    }
+
+    window.onload = function() {
+      renderMenu();
+    };
+
+  </script>
+</body>
+</html>

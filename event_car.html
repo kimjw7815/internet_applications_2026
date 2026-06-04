@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kim JiWoo | event_car</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+       height: 100vh;
+       overflow: hidden;
+    }
+    /* 도로(Road) 스타일: 아스팔트 느낌과 중앙선 배치 */
+    .road {
+      position: relative;       /* 자동차(absolute)의 기준점이 됨 */
+      width: 100%;
+      height: 500px;            /* 자동차가 움직일 수 있는 넉넉한 공간 */
+      background-color: #333333; /* 아스팔트 색상 */
+      border-radius: 12px;
+      overflow: hidden;         /* 자동차가 도로 밖으로 완전히 나갔을 때 잘림 처리 */
+      border: 4px solid var(--border-color);
+      
+      /* 아스팔트 중앙선 효과 (점선) */
+      background-image: linear-gradient(to right, #ffffff 50%, transparent 50%);
+      background-size: 60px 4px; /* 중앙선 선 크기 조절 */
+      background-repeat: repeat-x;
+      background-position: center; /* 도로 한가운데 중앙선 배치 */
+    }
+
+    /* 위에서 본 자동차 (앞뒤 구분 강화 버전) */
+    #car {
+      position: absolute;
+      width: 46px;
+      height: 80px;
+      background-color: #e81b1b; /* 본체: 진한 빨간색 */
+      border-radius: 12px 12px 6px 6px; /* 앞쪽(위)은 둥글게, 뒤쪽(아래)은 각지게 */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      margin: 0;
+      padding: 0;
+      transition: transform 0.1s ease;
+      
+      /* 바퀴 표현 (좌우 검은색 선) */
+      border-left: 4px solid #1a1a1a;
+      border-right: 4px solid #1a1a1a;
+    }
+
+    /* [앞쪽 레이아웃] 헤드라이트 & 앞유리 */
+    #car::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      
+      /* 1. 앞쪽 좌우 노란색 헤드라이트 */
+      background-image: 
+        linear-gradient(to bottom, #fffb00 4px, transparent 4px),
+        linear-gradient(to bottom, #fffb00 4px, transparent 4px),
+        /* 2. 전면 검은색 유리창 */
+        linear-gradient(to bottom, #222222 15px, transparent 15px);
+      
+      background-size: 
+        8px 4px,  /* 왼쪽 라이트 크기 */
+        8px 4px,  /* 오른쪽 라이트 크기 */
+        34px 15px; /* 유리창 크기 */
+        
+      background-repeat: no-repeat;
+      
+      /* 라이트는 좌우 끝에, 유리창은 앞쪽에 배치 */
+      background-position: 
+        4px 0,    /* 왼쪽 라이트 위치 */
+        26px 0,   /* 오른쪽 라이트 위치 */
+        2px 18px; /* 앞유리 위치 (범퍼 뒤쪽) */
+    }
+
+    /* [뒤쪽 레이아웃] 후미등(브레이크등) & 뒷유리 */
+    #car::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      
+      /* 1. 뒤쪽 좌우 붉은색 후미등 */
+      background-image: 
+        linear-gradient(to top, #ff0055 4px, transparent 4px),
+        linear-gradient(to top, #ff0055 4px, transparent 4px);
+        /* 2. 후면 검은색 뒷유리창 */
+        
+      background-size: 
+        8px 4px, 
+        8px 4px, 
+        32px 10px;
+        
+      background-repeat: no-repeat;
+      
+      /* 후미등은 맨 뒤 좌우에, 뒷유리는 뒤쪽 약간 앞에 배치 */
+      background-position: 
+        4px 10px,   /* 왼쪽 후미등 (bottom 기준이므로 높이만큼 보정) */
+        26px 10px,  /* 오른쪽 후미등 */
+        3px 25px;   /* 뒷유리 위치 */
+        
+      /* 기준점을 아래(bottom)로 잡아서 배치 */
+      transform: translateY(calc(100% - 14px)); 
+    }
+
+    /* 자동차 조종 핸들 스타일 */
+    .wheel {
+      position: absolute;
+      bottom: 20px;       /* 도로 바닥에서 20px 띄움 */
+      right: 20px;        /* 도로 오른쪽에서 20px 띄움 */
+      width: 70px;
+      height: 70px;
+      background-color: rgba(0, 0, 0, 0.6); /* 반투명한 검은색 원형 배경 */
+      border: 3px solid var(--primary-color); /* 테마 칼라로 테두리 강조 */
+      border-radius: 50%; /* 완벽한 원형 */
+      
+      /* 내부 이모지 정중앙 정렬 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      
+      z-index: 100;       /* 자동차보다 위에 보이도록 설정 */
+      transition: transform 0.15s ease-out; /* 회전할 때 부드럽게 슥- 돌아가게 */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      pointer-events: none; /* 핸들이 마우스 클릭을 방해하지 않도록 설정 */
+    }
+  </style>
+</head>
+<body>
+  <header id="header-root"></header>
+
+  <main class="container">
+    <section>
+      <div class="grid-container">
+        <div class="card">
+          <h2>키보드 자동차</h2>
+        </div>
+        <div class="road">
+          <p id="car" class="car"></p>
+          <div id="wheel" class="wheel">^</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer-root"></footer>
+  <script src="script.js"></script>
+
+  <script>
+    // 자동차의 상태(물리값) 정의
+let carState = {
+  x: 200,          // X 좌표 (가로)
+  y: 300,          // Y 좌표 (세로)
+  speed: 0,        // 현재 속도
+  maxSpeed: 4,     // 최대 속도
+  accel: 0.2,      // 가속도
+  decel: 0.1,      // 자연 감속도 (기어 중립 상태)
+  angle: -90,      // 자동차가 바라보는 각도 (도 단위, -90도가 위쪽 방향)
+  steerSpeed: 3    // 핸들을 꺾었을 때 회전하는 민감도
+};
+
+// 핸들(Wheel) 상태 정의
+let wheelAngle = 0;
+const maxWheelAngle = 60; // 핸들 최대 회전 각도
+
+// 현재 눌려있는 키보드 상태 저장소
+const keys = {
+  ArrowUp: false,
+  ArrowDown: false,
+  ArrowLeft: false,
+  ArrowRight: false
+};
+
+window.onload = function() {
+  const car = document.getElementById("car");
+  const wheel = document.getElementById("wheel");
+
+  // 1. 키보드 입력 감지 (누르고 있을 때 true)
+  window.onkeydown = function(e) {
+    if (e.key in keys) {
+      keys[e.key] = true;
+      e.preventDefault(); // 방향키 화면 스크롤 방지
+    }
+  };
+
+  // 2. 키보드 떼었을 때 감지 (false로 변경)
+  window.onkeyup = function(e) {
+    if (e.key in keys) {
+      keys[e.key] = false;
+    }
+  };
+
+  // 3. 무한 반복되는 게임 루프 (초당 60번 실행)
+  function gameLoop() {
+    // [A] 핸들(Wheel) 제어 및 각도 계산
+    if (keys.ArrowLeft) {
+      // 왼쪽으로 핸들 꺾기
+      wheelAngle = Math.max(wheelAngle - 5, -maxWheelAngle);
+    } else if (keys.ArrowRight) {
+      // 오른쪽으로 핸들 꺾기
+      wheelAngle = Math.min(wheelAngle + 5, maxWheelAngle);
+    } else {
+      // 핸들 복귀 (손 떼면 스르륵 정중앙으로)
+      if (wheelAngle > 0) wheelAngle = Math.max(wheelAngle - 4, 0);
+      if (wheelAngle < 0) wheelAngle = Math.min(wheelAngle + 4, 0);
+    }
+
+    // [B] 전진 / 후진 / 감속 제어
+    if (keys.ArrowUp) {
+      carState.speed = Math.min(carState.speed + carState.accel, carState.maxSpeed);
+    } else if (keys.ArrowDown) {
+      carState.speed = Math.max(carState.speed - carState.accel, -carState.maxSpeed / 2); // 후진은 조금 느리게
+    } else {
+      // 전진/후진 안 누르면 마찰력에 의해 서서히 멈춤
+      if (carState.speed > 0) carState.speed = Math.max(carState.speed - carState.decel, 0);
+      if (carState.speed < 0) carState.speed = Math.min(carState.speed + carState.decel, 0);
+    }
+
+    // [C] 🛞 핵심: 차가 움직이는 중에 핸들이 꺾여있으면 차의 방향(angle)을 바꿈!
+    if (carState.speed !== 0) {
+      // 전진할 때와 후진할 때 회전 방향을 반대로 처리 (실제 운전과 동일)
+      const directionModifier = carState.speed > 0 ? 1 : -1;
+      
+      // 핸들이 꺾인 비율만큼 자동차의 각도를 변화시킴
+      const turnFactor = (wheelAngle / maxWheelAngle) * carState.steerSpeed;
+      carState.angle += turnFactor * directionModifier;
+    }
+
+    // [D] 삼각함수를 이용해 자동차가 바라보는 방향으로 좌표(X, Y) 이동시키기
+    // 삼각함수는 라디안 단위를 쓰므로 변환 필요 ($radian = angle \times \frac{\pi}{180}$)
+    const radians = (carState.angle * Math.PI) / 180;
+    carState.x += Math.cos(radians) * carState.speed;
+    carState.y += Math.sin(radians) * carState.speed;
+
+    // [E] 화면 화면 갱신 (렌더링)
+    if (car) {
+      car.style.left = carState.x + "px";
+      car.style.top = carState.y + "px";
+      
+      // CSS 기준 기본 0도가 오른쪽을 보기 때문에, 탑다운 차량 이미지 세로 형태에 맞춰 +90도 보정
+      car.style.transform = `rotate(${carState.angle + 90}deg)`;
+    }
+
+    if (wheel) {
+      wheel.style.transform = `rotate(${wheelAngle}deg)`;
+    }
+
+    // 다음 프레임 예약
+    requestAnimationFrame(gameLoop);
+  }
+
+  // 게임 루프 가동 시작!
+  requestAnimationFrame(gameLoop);
+};
+
+  </script>
+</body>
+</html>
